@@ -9,7 +9,7 @@
         <module name="Wordle-App" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="8">
       <module name="Wordle-App" target="1.8" />
     </bytecodeTargetLevel>
   </component>
