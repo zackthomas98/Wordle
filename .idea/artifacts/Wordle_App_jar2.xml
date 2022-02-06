@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Wordle-App:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/Wordle_App_jar2</output-path>
+    <root id="archive" name="Wordle-App.jar">
+      <element id="module-output" name="Wordle-App" />
+    </root>
+  </artifact>
+</component>
