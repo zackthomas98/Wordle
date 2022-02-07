@@ -45,7 +45,7 @@ public class WordleServlet extends HttpServlet {
             response.getWriter().println("Zack recommends you try this word: " + hints.get(0) + "\n");
             response.getWriter().println("Click the Back button to enter the results of this guess for an updated hint");
         } catch (Exception e) {
-            response.getWriter().println("You discovered a bug. Let Zack know what you did to encounter this message.");
+            response.getWriter().println("You discovered a bug. Let Zack know what you did to encounter this message." + e.getMessage());
         }
     }
 }
