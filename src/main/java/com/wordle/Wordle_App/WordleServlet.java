@@ -41,7 +41,7 @@ public class WordleServlet extends HttpServlet {
         }
 
         List<String> hints = WordleHints.smoothInput(guesses);
-        if (hints.size() > 1) {
+        if (hints.size() > 0) {
             response.getWriter().println("Zack recommends you try this word: " + hints.get(0) + "\n");
             response.getWriter().println("Click the Back button to enter the results of this guess for an updated hint");
         } else {
