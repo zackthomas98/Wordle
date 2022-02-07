@@ -1,15 +1,18 @@
 package com.wordle.Wordle_App.Logic;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class WordleHints {
 
@@ -23,8 +26,8 @@ public class WordleHints {
     // TODO to be improved: first implementation is to simply add up raw frequencies
     private static final Map<String, Integer> WORD_SCORES = getWordScores(LETTER_FREQUENCIES);
 
-    private static final String DICTIONARY_PATH_1 = "/Users/zackthomas/Documents/personal/Wordle-App/src/main/resources/wordle-allowed-guesses.txt";
-    private static final String DICTIONARY_PATH_2 = "/Users/zackthomas/Documents/personal/Wordle-App/src/main/resources/wordle-answers-alphabetical.txt";
+    private static final String DICTIONARY_1 = "/wordle-allowed-guesses.txt";
+    private static final String DICTIONARY_2 = "/wordle-answers-alphabetical.txt";
 
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
@@ -61,33 +64,21 @@ public class WordleHints {
 
     private static List<String> getWords() {
         List<String> wordList = new ArrayList<>();
-        try {
-            // Load from first dictionary
-            File myObj = new File(DICTIONARY_PATH_1);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                String word = myReader.nextLine();
-                if (word.length() == 5) {
-                    wordList.add(word.toLowerCase());
-                }
-            }
-            myReader.close();
+        InputStream stream1 = WordleHints.class.getClassLoader().getResourceAsStream(DICTIONARY_1);
+        String list1 = new BufferedReader(
+                new InputStreamReader(stream1, StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.joining("\n"));
+        List<String> dic1 = Arrays.asList(list1.split("\n"));
 
-            // Load from second dictionary
-            myObj = new File(DICTIONARY_PATH_2);
-            myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                String word = myReader.nextLine();
-                wordList.add(word.toLowerCase());
-                if (word.length() == 5) {
-                    wordList.add(word.toLowerCase());
-                }
-            }
-            myReader.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        InputStream stream2 = WordleHints.class.getClassLoader().getResourceAsStream(DICTIONARY_2);
+        String list2 = new BufferedReader(
+                new InputStreamReader(stream2, StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.joining("\n"));
+        List<String> dic2 = Arrays.asList(list2.split("\n"));
+        wordList.addAll(dic1);
+        wordList.addAll(dic2);
         return wordList;
     }
 
