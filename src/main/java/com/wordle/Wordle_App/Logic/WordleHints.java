@@ -38,10 +38,10 @@ public class WordleHints {
             for (int i = 0; i < 5; i++) {
                 String letter = String.valueOf(key.charAt(i));
                 String color = String.valueOf(guessResultMap.get(key).charAt(i));
-                if (color.equals("B")) {
+                if (color.equals("b")) {
                     blackTiles.add(letter);
                 }
-                if (color.equals("Y")) {
+                if (color.equals("y")) {
                     // check if there is already a list of yellow tiles at this index
                     if (yellowTiles.get(i) != null) {
                         List<String> currentYellows = yellowTiles.get(i);
@@ -53,7 +53,7 @@ public class WordleHints {
                         yellowTiles.put(i, newYellow);
                     }
                 }
-                if (color.equals("G")) {
+                if (color.equals("g")) {
                     greenTiles.put(i, letter);
                 }
             }
