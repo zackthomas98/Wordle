@@ -3,8 +3,6 @@ package com.wordle.Wordle_App.Logic;
 import java.io.*;
 
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,15 +23,26 @@ public class WordleHints {
     private static final String DICTIONARY_1 = "/wordle-allowed-guesses.txt";
     private static final String DICTIONARY_2 = "/wordle-answers-alphabetical.txt";
 
+    private static final List<String> HINTS_GIVEN = new ArrayList<>();
+
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
-    public static final List<String> smoothInput(Map<String, String> guessResultMap) {
+    public static final String smoothInput(Map<String, String> guessResultMap) {
         // Get score of each word. This map will get smaller and smaller as words are eliminated.
         // TODO to be improved: first implementation is to simply add up raw frequencies
         Map<String, Integer> WORD_SCORES = getWordScores(LETTER_FREQUENCIES);
-        List<String> blackTiles = new ArrayList<>();
+        Set<String> blackTiles = new HashSet<>();
         Map<Integer, List<String>> yellowTiles = new HashMap<>();
         Map<Integer, String> greenTiles = new HashMap<>();
+        // don't repeat any letters for second guess
+        if (guessResultMap.size() == 1) {
+            String firstGuess = guessResultMap.keySet().stream().findFirst().get();
+            for (int i = 0; i < 5; i++) {
+                String letter = String.valueOf(firstGuess.charAt(i));
+                blackTiles.add(letter);
+            }
+            return handleEdgeCases(WORD_SCORES, blackTiles, yellowTiles, greenTiles);
+        }
         for (String key : guessResultMap.keySet()) {
             for (int i = 0; i < 5; i++) {
                 String letter = String.valueOf(key.charAt(i));
@@ -58,7 +67,28 @@ public class WordleHints {
                 }
             }
         }
-        return getNextGuesses(WORD_SCORES, blackTiles, yellowTiles, greenTiles);
+        return handleEdgeCases(WORD_SCORES, blackTiles, yellowTiles, greenTiles);
+
+    }
+
+    private static String handleEdgeCases(Map<String, Integer> WORD_SCORES,
+                                                Set<String> blackLetters,
+                                                Map<Integer, List<String>> yellowLetterToPositionMap,
+                                                Map<Integer, String> greenLetterToPositionMap) {
+        for (String letter : greenLetterToPositionMap.values()) {
+            if (blackLetters.contains(letter)) {
+                blackLetters.remove(letter);
+            }
+        }
+        for (List<String> letters : yellowLetterToPositionMap.values()) {
+            for (String letter : letters) {
+                if (blackLetters.contains(letter)) {
+                    blackLetters.remove(letter);
+                }
+            }
+        }
+        return getNextGuess(WORD_SCORES, blackLetters, yellowLetterToPositionMap, greenLetterToPositionMap);
+
     }
 
     private static List<String> getWords() {
@@ -110,15 +140,15 @@ public class WordleHints {
         return wordScores;
     }
 
-    private static List<String> getBestWords(Map<String, Integer> WORD_SCORES) {
+    private static String getBestWord(Map<String, Integer> WORD_SCORES) {
         Integer maxScore = getMaxScore(WORD_SCORES);
-        List<String> bestWords = new ArrayList<>();
+        String bestWord = null;
         for (String word : WORD_SCORES.keySet()) {
             if (WORD_SCORES.get(word) == maxScore) {
-                bestWords.add(word);
+                bestWord = word;
             }
         }
-        return bestWords;
+        return bestWord;
     }
 
     private static Integer getMaxScore(Map<String, Integer> wordScoresMap) {
@@ -144,12 +174,12 @@ public class WordleHints {
         return maxScore;
     }
 
-    static final List<String> getNextGuesses(Map<String, Integer> WORD_SCORES,
-                                             List<String> blackLetters,
+    static final String getNextGuess(Map<String, Integer> WORD_SCORES,
+                                             Set<String> blackLetters,
                                              Map<Integer, List<String>> yellowLetterToPositionMap,
                                              Map<Integer, String> greenLetterToPositionMap) {
         // for every letter in blackList, remove any word containing this letter from WORD_LIST
-        List<String> wordsToRemove = new ArrayList<>();
+        Set<String> wordsToRemove = new HashSet<>();
         for (String letter : blackLetters) {
             for (String word : WORD_SCORES.keySet()) {
                 if (word.contains(letter)) {
@@ -187,6 +217,6 @@ public class WordleHints {
         for (String word : wordsToRemove) {
             WORD_SCORES.remove(word);
         }
-        return getBestWords(WORD_SCORES);
+        return getBestWord(WORD_SCORES);
     }
 }
