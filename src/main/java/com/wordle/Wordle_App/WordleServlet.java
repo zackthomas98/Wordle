@@ -7,7 +7,6 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @WebServlet("/getHint")
@@ -40,12 +39,12 @@ public class WordleServlet extends HttpServlet {
             guesses.put(guess5, result5);
         }
 
-        List<String> hints = WordleHints.smoothInput(guesses);
-        if (hints.size() > 0) {
-            response.getWriter().println("Zack recommends you try this word: " + hints.get(0) + "\n");
+        String hint = WordleHints.smoothInput(guesses);
+        if (hint != null) {
+            response.getWriter().println("Zack recommends you try this word: " + hint + "\n");
             response.getWriter().println("Click the Back button to enter the results of this guess for an updated hint");
         } else {
-            response.getWriter().println("Looks like we're out of possible hints. Verify your input is correct.");
+            response.getWriter().println("Looks like we're out of possible hints. Verify your input is correct. If it is, then you hit an edge case I missed.");
         }
     }
 }
