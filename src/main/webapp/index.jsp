@@ -17,34 +17,34 @@
             For guesses that you have not reached yet, leave the box empty.
         </h3>
         <p>
-            Enter your guess #1 here <input type="text" name="guess1" required />
+            Enter your guess #1 here <input type="text" name="guess1" required maxlength="5" />
         </p>
         <p>
-            Enter the results of guess #1 here <input type="text" name="result1" required />
+            Enter the results of guess #1 here <input type="text" name="result1" required maxlength="5" />
         </p>
         <p>
-            Enter your guess #2 here <input type="text" name="guess2" />
+            Enter your guess #2 here <input type="text" name="guess2" maxlength="5" />
         </p>
         <p>
-            Enter the results of guess #2 here <input type="text" name="result2" />
+            Enter the results of guess #2 here <input type="text" name="result2" maxlength="5" />
         </p>
         <p>
-            Enter your guess #3 here <input type="text" name="guess3" />
+            Enter your guess #3 here <input type="text" name="guess3" maxlength="5" />
         </p>
         <p>
-            Enter the results of guess #3 here <input type="text" name="result3" />
+            Enter the results of guess #3 here <input type="text" name="result3" maxlength="5" />
         </p>
         <p>
-            Enter your guess #4 here <input type="text" name="guess4" />
+            Enter your guess #4 here <input type="text" name="guess4" maxlength="5" />
         </p>
         <p>
-            Enter the results of guess #4 here <input type="text" name="result4" />
+            Enter the results of guess #4 here <input type="text" name="result4" maxlength="5" />
         </p>
         <p>
-            Enter your guess #5 here <input type="text" name="guess5" />
+            Enter your guess #5 here <input type="text" name="guess5" maxlength="5" />
         </p>
         <p>
-            Enter the results of guess #5 here <input type="text" name="result5" />
+            Enter the results of guess #5 here <input type="text" name="result5" maxlength="5" />
         </p>
         <p>
            <input type="submit" value="Get hint"/>
