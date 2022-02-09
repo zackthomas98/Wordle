@@ -43,6 +43,21 @@ public class WordleHints {
             }
             return handleEdgeCases(WORD_SCORES, blackTiles, yellowTiles, greenTiles);
         }
+        // only propose possible answers by this point
+        List<String> guessesToRemove = new ArrayList<>();
+        if (guessResultMap.size() == 3 || guessResultMap.size() == 4 || guessResultMap.size() == 5) {
+            InputStream answers = WordleHints.class.getClassLoader().getResourceAsStream(DICTIONARY_2);
+            String answerString = new BufferedReader(
+                    new InputStreamReader(answers, StandardCharsets.UTF_8))
+                    .lines()
+                    .collect(Collectors.joining("\n"));
+            List<String> answerList = Arrays.asList(answerString.split("\n"));
+            for (String word : WORD_SCORES.keySet()) {
+                if (!answerList.contains(word)) {
+                    guessesToRemove.add(word);
+                }
+            }
+        }
         for (String key : guessResultMap.keySet()) {
             for (int i = 0; i < 5; i++) {
                 String letter = String.valueOf(key.charAt(i));
@@ -66,6 +81,9 @@ public class WordleHints {
                     greenTiles.put(i, letter);
                 }
             }
+        }
+        for (String word : guessesToRemove) {
+            WORD_SCORES.remove(word);
         }
         return handleEdgeCases(WORD_SCORES, blackTiles, yellowTiles, greenTiles);
 
@@ -208,6 +226,9 @@ public class WordleHints {
         // for every letter in greenList, remove any word that does NOT contain this letter at the given position
         for (Integer index : greenLetterToPositionMap.keySet()) {
             for (String word : WORD_SCORES.keySet()) {
+                if (word.equals("arose")) {
+                    assert true;
+                }
                 List<String> wordAsList = Arrays.asList(word.split(""));
                 if (!wordAsList.get(index).equals(greenLetterToPositionMap.get(index))) {
                     wordsToRemove.add(word);
