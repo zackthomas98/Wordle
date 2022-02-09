@@ -11,7 +11,7 @@
         <h3>
             This algorithm has determined that the first and second guesses are highly important to establishing
             the letter bank.<br>As a result, you will notice that the first hint and first guess will contain
-            mutually exclusive sets of letters.<br>If I didn't use that word right, email me at test.null@example.com
+            mutually exclusive sets of letters.
             <br> <br>
             To enter the results of a guess, refer to this legend:
             B = black tile, Y = yellow tile, G = green tile <br>
